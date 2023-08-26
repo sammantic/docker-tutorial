@@ -4,9 +4,9 @@ networks:
        test_network:
               external: true
 services:
-       db:
+       mydb:
               image: mysql
-              container_name: mysql1
+              container_name: mydb1
               restart: always
               ports:
                      - "3306:3306"
@@ -19,14 +19,30 @@ services:
               image: phpmyadmin
               container_name: phpmyadmin1
               links:
-                     - db
+                     - mydb
               ports:
                      - "8082:80"
               networks:
                      - test_network
               environment:
-                     PMA_HOST: db
+                     PMA_HOST: mydb
                      PMA_PORT: 3306
               depends_on:
-                     - db
+                     - mydb
+
+       website:
+              build: ./website
+              container_name: flask-web
+              restart: always
+              links:
+                      - mydb
+              ports:
+                     - '5400:5400'
+              networks:
+                      - test_network
+              depends_on:
+                      - mydb
+
+
+
 

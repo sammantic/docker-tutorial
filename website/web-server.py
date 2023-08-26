@@ -5,16 +5,15 @@ import mysql.connector
 
 app = Flask(__name__)
 
-mydb = mysql.connector.connect(
+
+@app.route("/")
+def hello_world():
+    mydb = mysql.connector.connect(
         host="mydb",
         user="root",
         password="helloworld"
         )
 
-#mycursor = mydb.cursor()
-
-@app.route("/")
-def hello_world():
     mycursor = mydb.cursor()
     mycursor.execute("SHOW DATABASES")
     para = ""
